@@ -30,6 +30,11 @@ function activerecord_autoload($class_name)
 	$path = ActiveRecord\Config::instance()->get_model_directory();
 	$root = realpath(isset($path) ? $path : '.');
 
+	/* ADDED BY FOXYCART */
+	// see http://www.phpactiverecord.org/boards/1/topics/537-better-support-of-namespace-for-model?r=1116-re-better-support-of-namespace-for-model
+	$class_name = ActiveRecord\denamespace($class_name);
+	/* END ADDED BY FOXYCART */
+	
 	if (($namespaces = ActiveRecord\get_namespaces($class_name)))
 	{
 		$class_name = array_pop($namespaces);

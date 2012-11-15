@@ -456,8 +456,14 @@ class Model
 		if ($value instanceof DateTime)
 			$value->attribute_of($this,$name);
 
+		// ADDED BY FoxyCart
+		$flag_as_dirty = (isset($this->attributes[$name]) && $this->attributes[$name] === $value) ? false : true;
+		
 		$this->attributes[$name] = $value;
-		$this->flag_dirty($name);
+		// ADDED BY FoxyCart
+		if ($flag_as_dirty)
+			$this->flag_dirty($name);
+		
 		return $value;
 	}
 
@@ -555,7 +561,9 @@ class Model
 	 */
 	public function attribute_is_dirty($attribute)
 	{
-		return $this->__dirty && $this->__dirty[$attribute] && array_key_exists($attribute, $this->attributes);
+	    //return $this->__dirty && $this->__dirty[$attribute] && array_key_exists($attribute, $this->attributes);
+	    // MODIFIED BY FoxyCart
+	    return $this->__dirty && array_key_exists($attribute, $this->attributes) && array_key_exists($attribute, $this->__dirty);
 	}
 
 	/**

@@ -117,12 +117,14 @@ class Validations
 			{
 				$field = $attr[0];
 
-				if (!isset($data[$field]) || !is_array($data[$field]))
-					$data[$field] = array();
-
-				$attr['validator'] = $validate;
-				unset($attr[0]);
-				array_push($data[$field],$attr);
+				if (!is_array($field)) { // ADDED BY FOXYCART
+    				if (!isset($data[$field]) || !is_array($data[$field]))
+    					$data[$field] = array();
+    
+    				$attr['validator'] = $validate;
+    				unset($attr[0]);
+    				array_push($data[$field],$attr);
+				}  // ADDED BY FOXYCART
 			}
 		}
 		return $data;
@@ -829,7 +831,9 @@ class Errors implements IteratorAggregate
 					if (is_null($msg))
 						continue;
 
-					$errors[$attribute][] = ($message = Utils::human_attribute($attribute) . ' ' . $msg);
+					// MODIFIED BY FoxyCart
+					$errors[$attribute][] = ($message = $attribute . ' ' . $msg);
+					//$errors[$attribute][] = ($message = Utils::human_attribute($attribute) . ' ' . $msg);
 
 					if ($closure)
 						$closure($attribute,$message);
