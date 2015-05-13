@@ -457,13 +457,13 @@ class Model
 			$value->attribute_of($this,$name);
 
 		// ADDED BY FoxyCart
-		$flag_as_dirty = (isset($this->attributes[$name]) && $this->attributes[$name] === $value) ? false : true;
-		
+		$flag_as_dirty = (isset($this->attributes[$name]) && (string)$this->attributes[$name] === (string)$value) ? false : true;
+
 		$this->attributes[$name] = $value;
 		// ADDED BY FoxyCart
 		if ($flag_as_dirty)
 			$this->flag_dirty($name);
-		
+
 		return $value;
 	}
 
