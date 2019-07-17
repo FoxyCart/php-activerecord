@@ -320,7 +320,8 @@ class Validations
 
 			$numericalityOptions = array_intersect_key(self::$ALL_NUMERICALITY_CHECKS, $options);
 
-			if ($this->is_null_with_option($var, $options))
+			// MODIFIED BY FOXYCART!!! (added || $this->is_blank_with_option($var, $options) )
+			if ($this->is_null_with_option($var, $options) || $this->is_blank_with_option($var, $options))
 				continue;
 
 			$not_a_number_message = (isset($options['message']) ? $options['message'] : Errors::$DEFAULT_ERROR_MESSAGES['not_a_number']);
@@ -424,7 +425,7 @@ class Validations
 			$attribute = $options[0];
 			$var = $this->model->$attribute;
 
-			if (is_null($options['with']) || !is_string($options['with']))
+			if (is_null($options['with']) || !is_string($options['with']) || !is_string($options['with']))
 				throw new ValidationsArgumentError('A regular expression must be supplied as the [with] option of the configuration array.');
 			else
 				$expression = $options['with'];
@@ -433,7 +434,7 @@ class Validations
 				continue;
 
 			if (!@preg_match($expression, $var))
-			$this->record->add($attribute, $options['message']);
+				$this->record->add($attribute, $options['message']);
 		}
 	}
 
@@ -567,8 +568,6 @@ class Validations
 		$configuration = array_merge(self::$DEFAULT_VALIDATION_OPTIONS, array(
 			'message' => Errors::$DEFAULT_ERROR_MESSAGES['unique']
 		));
-		// Retrieve connection from model for quote_name method
-		$connection = $this->klass->getMethod('connection')->invoke(null);
 
 		foreach ($attrs as $attr)
 		{
@@ -592,10 +591,10 @@ class Validations
 			$unique = true;
 
 			if ($pk_value === null)
-				$sql = "{$pk_quoted} IS NOT NULL";
+				$sql = "{$pk[0]} is not null";
 			else
 			{
-				$sql = "{$pk_quoted} != ?";
+				$sql = "{$pk[0]}!=?";
 				array_push($conditions,$pk_value);
 			}
 
