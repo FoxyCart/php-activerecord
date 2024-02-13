@@ -5,6 +5,8 @@
 namespace ActiveRecord;
 use Closure;
 
+require_once __DIR__ . "/cache/Redis.php";
+
 /**
  * Manages configuration options for ActiveRecord.
  *
@@ -329,5 +331,28 @@ class Config extends Singleton
 	public function set_cache($url, $options=array())
 	{
 		Cache::initialize($url,$options);
+	}
+
+	/**
+	 * Sets the adapter for the cache server to enable query caching.
+	 *
+	 * Only table schema queries are cached at the moment. A general query cache
+	 * will follow.
+	 *
+	 * Example:
+	 *
+	 * <code>
+	 * $config->set_cache_adapter($adapter);
+	 * $config->set_cache_adapter($adapter,["expire" => 60]);
+	 * </code>
+	 *
+	 * @param string $url Url to your cache server.
+	 * @param array $options Array of options
+	 */
+	public function set_cache_adapter($adapter, $options=[])
+	{
+		$options = array_merge(['expire' => 30, 'namespace' => ''], $options);
+		Cache::$adapter = $adapter;
+		Cache::$options = $options;
 	}
 }
