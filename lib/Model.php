@@ -1885,7 +1885,7 @@ class Model
 	 * @param boolean $must_exist Set to true to raise an exception if the callback does not exist.
 	 * @return boolean True if invoked or null if not
 	 */
-	private function invoke_callback($method_name, $must_exist=true)
+	public function invoke_callback($method_name, $must_exist=true)
 	{
 		return static::table()->callback->invoke($this,$method_name,$must_exist);
 	}
