@@ -487,7 +487,7 @@ abstract class Connection
 		$date = date_create($string);
 		$errors = \DateTime::getLastErrors();
 
-		if ($errors['warning_count'] > 0 || $errors['error_count'] > 0)
+		if ($errors && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
 			return null;
 
 		$date_class = Config::instance()->get_date_class();
