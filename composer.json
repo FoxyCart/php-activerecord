@@ -1,5 +1,5 @@
 {
-    "name": "php-activerecord/php-activerecord",
+    "name": "foxycart/php-activerecord",
     "type": "library",
     "description": "php-activerecord is an open source ORM library based on the ActiveRecord pattern.",
     "keywords": ["activerecord", "orm"],
@@ -14,6 +14,7 @@
         "pear/log": "~1.12"
     },
     "autoload": {
-        "files": [ "ActiveRecord.php" ]
+        "classmap": ["lib/"],
+        "files": ["lib/Utils.php"]
     }
 }

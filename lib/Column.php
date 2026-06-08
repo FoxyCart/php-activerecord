@@ -153,7 +153,7 @@ class Column
 	public function cast($value, $connection)
 	{
 		if ($value === null)
-			return null;
+			return $this->type === self::STRING ? '' : null;
 
 		switch ($this->type)
 		{
